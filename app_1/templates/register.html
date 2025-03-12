@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}Ro‘yxatdan o‘tish{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg">
+                <div class="card-body">
+                    <h3 class="text-center text-primary">Ro‘yxatdan o‘tish</h3>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label class="form-label">Foydalanuvchi nomi</label>
+                            <input type="text" name="username" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" name="email" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Parol</label>
+                            <input type="password" name="password" class="form-control" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Ro‘yxatdan o‘tish</button>
+                    </form>
+                    <p class="text-center mt-3">Allaqachon akkauntingiz bormi? <a href="{% url 'login' %}">Tizimga kiring</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

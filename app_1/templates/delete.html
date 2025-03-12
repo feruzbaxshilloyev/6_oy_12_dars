@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Yangilikni o‘chirish{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="card shadow-lg p-4">
+        <h2 class="text-center text-danger">🗑 Yangilikni o‘chirish</h2>
+        <p class="text-center">Siz haqiqatdan ham <strong>{{ news.title }}</strong> yangiligini o‘chirmoqchimisiz?</p>
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="text-center mt-3">
+                <button type="submit" class="btn btn-danger px-4">🗑 Ha, o‘chirish</button>
+                <a href="{% url 'news' %}" class="btn btn-outline-secondary px-4">🔙 Bekor qilish</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
