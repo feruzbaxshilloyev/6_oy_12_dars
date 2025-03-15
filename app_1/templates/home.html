@@ -12,9 +12,14 @@
         }
         .navbar {
             background-color: #007bff !important;
+            padding: 15px 0;
         }
         .navbar-brand, .nav-link {
             color: #fff !important;
+            font-weight: bold;
+        }
+        .nav-link:hover {
+            text-decoration: underline;
         }
         .hero-section {
             background: url('https://source.unsplash.com/1600x900/?news') no-repeat center center/cover;
@@ -24,16 +29,22 @@
             justify-content: center;
             color: white;
             text-align: center;
+            position: relative;
         }
         .hero-text {
             background: rgba(0, 0, 0, 0.6);
             padding: 20px;
             border-radius: 10px;
+            max-width: 600px;
+        }
+        .hero-text h1 {
+            font-size: 2rem;
         }
         .news-card {
-            transition: 0.3s;
+            transition: transform 0.3s, box-shadow 0.3s;
             border-radius: 10px;
             overflow: hidden;
+            background: white;
         }
         .news-card:hover {
             transform: scale(1.05);
@@ -46,11 +57,16 @@
         .card-body {
             background-color: white;
         }
+        .card-img-top {
+            height: 200px;
+            object-fit: cover;
+        }
         footer {
             background-color: #343a40;
             color: white;
             text-align: center;
             padding: 10px 0;
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -59,16 +75,17 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
-            <a class="navbar-brand" href="#">Yangiliklar</a>
+            <a class="navbar-brand" href="#">📰 Yangiliklar</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="{% url 'create' %}">Yangilik qo'shish</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'news' %}">Yangiliklar</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">Biz haqimizda</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Aloqa</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'app1:create' %}">➕ Yangilik qo'shish</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'app1:news' %}">🗞 Yangiliklar</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'app1:about' %}">ℹ️ Biz haqimizda</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'app1:contact' %}">📞 Bog‘lanish</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'profil:account' %}">👤 Account</a></li>
                 </ul>
             </div>
         </div>
@@ -77,29 +94,36 @@
     <!-- Hero Section -->
     <div class="hero-section">
         <div class="hero-text">
-            <h1>Eng so‘nggi yangiliklardan xabardor bo‘ling</h1>
+            <h1>Eng so‘nggi yangiliklardan xabardor bo‘ling 📰</h1>
             <p>Haqiqat va tezkorlik bilan taqdim etiladigan eng muhim yangiliklar</p>
-            <a href="{% url 'news' %}" class="btn btn-primary">Hozir o‘qish</a>
+            <a href="{% url 'app1:news' %}" class="btn btn-primary">📖 Hozir o‘qish</a>
         </div>
     </div>
 
     <!-- News Section -->
     <div class="container my-5">
-        <h2 class="text-center mb-4">So‘nggi Yangiliklar</h2>
-        <div class="row">
+        <h2 class="text-center text-primary mb-4">📰 So‘nggi Yangiliklar</h2>
+        <div class="row g-4">
             {% for news in users %}
-            <div class="col-md-4">
-                <div class="card news-card">
-                    <img src="{{ news.image.url }}" class="card-img-top" alt="{{ news.title }}">
+            <div class="col-md-6 col-lg-4">
+                <div class="card news-card shadow-lg">
+                    {% if news.image %}
+                        <img src="{{ news.image.url }}" class="card-img-top" alt="{{ news.name }}">
+                    {% else %}
+                        <img src="https://via.placeholder.com/300" class="card-img-top" alt="No Image">
+                    {% endif %}
                     <div class="card-body">
                         <h5 class="card-title">{{ news.name }}</h5>
-                        <p class="card-text">{{ news.short_info}}</p>
-                        <a href="#" class="btn btn-primary">Batafsil</a>
+                        <p class="card-text text-muted">{{ news.short_info|truncatewords:15 }}</p>
+                        <a href="{% url 'app1:details' news.id %}" class="btn btn-outline-primary w-100">📖 Batafsil o‘qish</a>
+                    </div>
+                    <div class="card-footer text-muted text-end">
+                        🕒 {{ news.created_at|date:"d-m-Y H:i" }}
                     </div>
                 </div>
             </div>
             {% empty %}
-            <p class="text-center">Hozircha yangiliklar mavjud emas.</p>
+            <p class="text-center text-danger fw-bold fs-4">🚫 Hozircha yangiliklar yo‘q.</p>
             {% endfor %}
         </div>
     </div>

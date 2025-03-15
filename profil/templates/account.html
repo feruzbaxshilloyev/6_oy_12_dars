@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center" style="height: 100vh; background: linear-gradient(to right, #4facfe, #00f2fe);">
+    <div class="card shadow-lg p-4 text-center" style="width: 350px; border-radius: 15px; background: white;">
+        {% if user.is_authenticated %}
+            <img src="{{ user.profile.image.url }}" alt="Profil rasmi" class="rounded-circle mb-3" width="100">
+            <h4 class="text-dark">{{ user.username }}</h4>
+            <p class="text-muted">{{ user.email }}</p>
+            <a href="{% url 'profil:profil' %}" class="btn btn-primary w-100">Profilga o'tish</a>
+            <a href="{% url 'logout' %}" class="btn btn-danger w-100 mt-2">Chiqish</a>
+        {% else %}
+            <h3 class="text-dark">Xush kelibsiz!</h3>
+            <p class="text-muted">Iltimos, profilingizga kiring</p>
+            <a href="{% url 'profil:login' %}" class="btn btn-success w-100">Kirish</a>
+            <a href="{% url 'profil:register' %}" class="btn btn-outline-primary w-100 mt-2">Ro'yxatdan o'tish</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -29,17 +29,16 @@
 
     <nav class="navbar navbar-expand-lg">
         <div class="container">
-            <a class="navbar-brand" href="{% url 'home' %}">News Site</a>
+            <a class="navbar-brand" href="{% url 'app1:home' %}">News Site</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="{% url 'create' %}">Yangilik qo'shish</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'news' %}">Yangiliklar</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">Biz haqimizda</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Bog‘lanish</a></li>
-                     <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'app1:news' %}">Yangiliklar</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'app1:about' %}">Biz haqimizda</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'app1:contact' %}">Bog‘lanish</a></li>
+                     <li class="nav-item"><a class="nav-link" href="{% url 'profil:account' %}">Akkount</a></li>
 
                 </ul>
             </div>

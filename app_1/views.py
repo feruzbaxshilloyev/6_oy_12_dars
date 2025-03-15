@@ -1,6 +1,10 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
+from django.urls import reverse_lazy
+from django.views.generic import CreateView
 from .models import User
+from .forms import NewsForm
 
 
 def home(request):
@@ -17,7 +21,7 @@ def contact(request):
 
 def news(request):
     users = User.objects.all()
-    return render(request, 'news.html', {'users': users})
+    return render(request, 'news.html', {'newss': users})
 
 
 def details(request, id):
@@ -25,22 +29,11 @@ def details(request, id):
     return render(request, 'detail.html', {'user': user})
 
 
-def create(request):
-    if request.method == 'POST':
-        name = request.POST.get('name')
-        short_info = request.POST.get('short_info')
-        description = request.POST.get('description')
-        image = request.FILES.get('image')
-
-        if not all([name, short_info, description, image]):
-            messages.error(request, "Barcha maydonlarni to‘ldiring!")
-            return redirect('create')
-
-        User.objects.create(name=name, short_info=short_info, description=description, image=image)
-        messages.success(request, "Foydalanuvchi muvaffaqiyatli yaratildi!")
-        return redirect('news')
-
-    return render(request, 'create.html')
+class Create(LoginRequiredMixin, CreateView):
+    model = User
+    form_class = NewsForm
+    template_name = 'create.html'
+    success_url = reverse_lazy('app1:news')
 
 
 def update(request, id):
@@ -49,11 +42,14 @@ def update(request, id):
         user.name = request.POST.get('name', user.name)
         user.short_info = request.POST.get('short_info', user.short_info)
         user.description = request.POST.get('description', user.description)
+
         if 'image' in request.FILES:
             user.image = request.FILES['image']
+
         user.save()
-        messages.success(request, "Foydalanuvchi muvaffaqiyatli yangilandi!")
-        return redirect('details', id=user.id)
+        messages.success(request, "Yangilik muvaffaqiyatli yangilandi! ✅")
+        return redirect('app1:details', id=user.id)
+
     return render(request, 'update.html', {'user': user})
 
 
@@ -62,5 +58,5 @@ def delete(request, id):
     if request.method == 'POST':
         user.delete()
         messages.success(request, "Foydalanuvchi muvaffaqiyatli o‘chirildi!")
-        return redirect('news')
+        return redirect('app1:news')
     return render(request, 'delete.html', {'user': user})

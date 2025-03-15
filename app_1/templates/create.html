@@ -1,23 +1,129 @@
-<form action="{% url 'create' %}" method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
+{% if user.is_authenticated %}
+<style>
+    body {
+        background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 
-    <label for="name">Ism:</label>
-    <input type="text" name="name" required>
+    .form-container {
+        background: #fff;
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        max-width: 500px;
+        width: 100%;
+        animation: fadeIn 1s ease-in-out;
+    }
 
-    <label for="short_info">Qisqacha ma’lumot:</label>
-    <input type="text" name="short_info" required>
+    @keyframes fadeIn {
+        from { opacity: 0; transform: scale(0.9); }
+        to { opacity: 1; transform: scale(1); }
+    }
 
-    <label for="description">To‘liq ma’lumot:</label>
-    <textarea name="description" required></textarea>
+    .form-label {
+        font-weight: bold;
+        color: #333;
+    }
 
-    <label for="image">Rasm yuklash:</label>
-    <input type="file" name="image" required>
+    .btn-submit {
+        background: linear-gradient(135deg, #ff758c, #ff7eb3);
+        border: none;
+        color: white;
+        padding: 12px;
+        font-size: 16px;
+        font-weight: bold;
+        width: 100%;
+        border-radius: 8px;
+        transition: 0.3s ease-in-out;
+    }
 
-    <button type="submit">Yaratish</button>
-</form>
+    .btn-submit:hover {
+        background: linear-gradient(135deg, #ff7eb3, #ff758c);
+        transform: scale(1.05);
+    }
 
-{% if messages %}
-    {% for message in messages %}
-        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-    {% endfor %}
+    .alert {
+        border-radius: 8px;
+        font-weight: bold;
+    }
+</style>
+
+<div class="form-container">
+    <h3 class="text-center text-primary mb-4">📰 Yangilik Yaratish</h3>
+
+    <form action="{% url 'app1:create' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="author" class="form-label">👤 Muallif:</label>
+            <input type="text" name="short_info" class="form-control" placeholder="Muallif ismini kiriting" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="short_info" class="form-label">📝 Qisqacha ma’lumot:</label>
+            <input type="text" name="short_info" class="form-control" placeholder="Qisqacha ma’lumot kiriting" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="description" class="form-label">📄 To‘liq ma’lumot:</label>
+            <textarea name="description" class="form-control" rows="4" placeholder="Batafsil ma’lumot yozing" required></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="image" class="form-label">🖼 Rasm yuklash:</label>
+            <input type="file" name="image" class="form-control" required>
+        </div>
+
+        <button type="submit" class="btn btn-submit">📤 Yaratish</button>
+    </form><hr>
+    <a href="{% url 'app1:home' %}" class="btn btn-submit"> Bosh sahifa</a>
+
+    {% if messages %}
+        <div class="mt-3">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} text-center">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+{% else %}
+<style>
+    .not-logged-in {
+        text-align: center;
+        background: rgba(255, 255, 255, 0.9);
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        max-width: 400px;
+    }
+
+    .not-logged-in h3 {
+        color: #ff4757;
+    }
+
+    .login-btn {
+        background: linear-gradient(135deg, #ff758c, #ff7eb3);
+        color: white;
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: bold;
+        text-decoration: none;
+        display: inline-block;
+        transition: 0.3s ease-in-out;
+    }
+
+    .login-btn:hover {
+        background: linear-gradient(135deg, #ff7eb3, #ff758c);
+        transform: scale(1.05);
+    }
+</style>
+
+<div class="not-logged-in">
+    <h3>❌ Foydalanuvchi kirmagan!</h3>
+    <p>Yangilik qo‘shish uchun, iltimos <strong>akkauntingizga kiring</strong>.</p>
+    <a href="{% url 'profil:login' %}" class="login-btn">🔑 Kirish</a>
+</div>
 {% endif %}
